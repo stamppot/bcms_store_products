@@ -7,4 +7,4 @@
 #   Major.create(:name => 'Daley', :city => cities.first)
 # Just invoke the rake task since the current mano_browsercms repo does not use a rails version that supports
 # The db:seed rake task
-Rake::Task['db:seed:weavings'].invoke
+Rake::Task['db:seed:products'].invoke

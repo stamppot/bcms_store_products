@@ -2,8 +2,8 @@ class StoreController < ApplicationController
   def add_to_cart
     # FIXME: Using a hack until I can sort out what is going on
     # The following code should look like this
-    # cart.weavings << weaving
-    # an it should just end up updating weavings and setting the cart_id for the weaving concerned
+    # cart.products << product
+    # an it should just end up updating products and setting the cart_id for the product concerned
     # instead it does something funny with the versioning table
     # it would seem this behaviour is caused by something added to the model with acts_as_content_block
     cart = Cart.current_cart(session)
@@ -12,18 +12,18 @@ class StoreController < ApplicationController
       cart = Cart.create!
       session[:cart_id] = cart.id
     end
-    ActiveRecord::Base.connection.execute('UPDATE weavings SET cart_id=' + cart.id.to_s + ' WHERE id=' + params["weaving"]["id"].to_s)
+    ActiveRecord::Base.connection.execute('UPDATE products SET cart_id=' + cart.id.to_s + ' WHERE id=' + params["product"]["id"].to_s)
 
     # FIXME: Use the real return path
-    redirect_to '/weavings/weavings'
+    redirect_to '/products/products'
   end
 
   def remove_from_cart
     # FIXME: Using a hack until I can sort out what is going on
     # Situation similar to the problem in add_to_cart, see comment there for details
-    ActiveRecord::Base.connection.execute('UPDATE weavings SET cart_id = null WHERE id = ' + params["weaving"]["id"].to_s)
+    ActiveRecord::Base.connection.execute('UPDATE products SET cart_id = null WHERE id = ' + params["product"]["id"].to_s)
 
     # FIXME: Use the real return path
-    redirect_to '/weavings/weavings'
+    redirect_to '/products/products'
   end
 end

@@ -1,11 +1,11 @@
 class Cart < ActiveRecord::Base
-  has_many :weavings
+  has_many :products
   has_one :order
 
   def total_price
     total = 0
-    weavings.each do |weaving|
-      total += weaving.selling_price
+    products.each do |product|
+      total += product.selling_price
     end
     total
   end
@@ -19,7 +19,7 @@ class Cart < ActiveRecord::Base
     if(session[:cart_id] && Cart.exists?(session[:cart_id]))
       cart = Cart.find(session[:cart_id])
 
-      # Throw away this cart because the user should not be adding weavings to a purchased cart
+      # Throw away this cart because the user should not be adding products to a purchased cart
       if(cart.purchased_at)
         cart = nil
         session[:cart_id] = cart
@@ -39,12 +39,12 @@ class Cart < ActiveRecord::Base
     if front_end
       checkout_command = front_end.create_checkout_command
       # Adding an item to shopping cart
-      weavings.each do |weaving|
+      products.each do |product|
         checkout_command.shopping_cart.create_item do |item|
-          item.name = weaving.weaving_type.name
-          item.description = weaving.summary_description
-          item.unit_price = Money.new(100 * weaving.selling_price)
-          item.quantity = 1 # Weavings are unique so there will only ever be a single weaving
+          item.name = product.product_type.name
+          item.description = product.summary_description
+          item.unit_price = Money.new(100 * product.selling_price)
+          item.quantity = 1 # Products are unique so there will only ever be a single product
         end
       end
     end
@@ -53,7 +53,7 @@ class Cart < ActiveRecord::Base
     checkout_command.shopping_cart.private_data = { :cart_id => cart_id }
     # FIXME: Make the configurable by the client
     # This url is shown on the first page the client sees
-    checkout_command.edit_cart_url = 'http://192.168.56.64:3000/weavings/weavings'
+    checkout_command.edit_cart_url = 'http://192.168.56.64:3000/products/products'
     # This url is displayed for "Return to ..." after the client clicks "Place Order"
     # FIXME: Do this the rails way
     checkout_command.continue_shopping_url = 'http://192.168.56.64:3000/orders/new?pp=gc'# new_order_url + '?pp=gc'

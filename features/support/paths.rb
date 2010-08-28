@@ -10,16 +10,16 @@ module NavigationHelpers
     
     when /the home\s?page/
       '/'
-    when /the list of weavers/
-      '/cms/weavers'
-    when /the list of weavings/
-      '/cms/weavings'
-    when /the list of weaving types/
-      '/cms/weaving_types'
+    when /the list of producers/
+      '/cms/producers'
+    when /the list of products/
+      '/cms/products'
+    when /the list of product types/
+      '/cms/product_types'
     when /the list of wool types/
-      '/cms/wool_types'
-    when /browse weavings page/
-      '/weavings/items-for-sale'
+      '/cms/food_types'
+    when /browse products page/
+      '/products/items-for-sale'
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

@@ -5,7 +5,7 @@ class OrdersController < ApplicationController
     response = EXPRESS_GATEWAY.setup_purchase(cart.total_price_in_cents,
       :ip                => request.remote_ip,
       :return_url        => new_order_url + '?pp=pp',
-      :cancel_return_url => 'http://192.168.56.64:3000/weavings/weavings' #should go to list of weavings, maybe add to admin section of browsercms if possible
+      :cancel_return_url => 'http://192.168.56.64:3000/products/products' #should go to list of products, maybe add to admin section of browsercms if possible
     )
     redirect_to EXPRESS_GATEWAY.redirect_url_for(response.token)
   end
@@ -83,6 +83,6 @@ class OrdersController < ApplicationController
     end
     order.save
     flash[:notice] = "Shipped and archived order totalling $" + order.price.to_s
-    redirect_to '/weavings/weavings'
+    redirect_to '/products/products'
   end
 end

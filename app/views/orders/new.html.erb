@@ -6,35 +6,35 @@
 		<% else %>
 			<% if @order.payment_processor == 'paypal_express' %>
 				<%= f.hidden_field :paypal_express_token %>
-				<p>Your paypal status is: <%=h @order.payer_status %></p>
-				<p>Your paypal address status is: <%=h @order.address_status %></p>
+				<p>Din paypal status er: <%=h @order.payer_status %></p>
+				<p>Din paypal adresse status er: <%=h @order.address_status %></p>
 			<% end %>
 			<p>Order Financial State: <%=h @order.financial_state %></p>
 			<p>Order Fulfillment State: <%=h @order.fulfillment_state %></p>
-		    <p>Name: <%=h @order.first_name %> <%=h @order.last_name %></p>
+		    <p>Navn: <%=h @order.first_name %> <%=h @order.last_name %></p>
 			<p>Contact Email: <%=h @order.email %></p>
 			<% if @order.payment_processor == 'google_checkout' %>
 				<p>Google Order number: <%=h @order.google_order_number %></p>
 				<%= f.hidden_field :google_order_number %>
 			<% end %>
 			<p>
-				<h3>Shipping to</h3>
-				Name: <%=h @order.ship_to_name %> <br />
-				Street Line 1: <%=h @order.ship_to_street_line_1 %> <br />
-				Street Line 2: <%=h @order.ship_to_street_line_2 %> <br />
-				City: <%=h @order.ship_to_city %> <br />
-				State: <%=h @order.ship_to_state %> <br />
-				Country Code: <%=h @order.ship_to_country_code %> <br />
-				Country Name: <%=h @order.ship_to_country_name %> <br />
-				Zip: <%=h @order.ship_to_zip %> <br />
+				<h3>Sendes til</h3>
+				Navn: <%=h @order.ship_to_name %> <br />
+				Vej/gade: <%=h @order.ship_to_street_line_1 %> <br />
+				Adresse ekstra: <%=h @order.ship_to_street_line_2 %> <br />
+				Postnr: <%=h @order.ship_to_zip %> 
+				By: <%=h @order.ship_to_city %> <br />
+				<!-- State: <%#h @order.ship_to_state %> <br /> -->
+				<!-- Country Code: <%#h @order.ship_to_country_code %> <br /> -->
+				Land: <%=h @order.ship_to_country_name %> <br />
 			</p>
-			<h3>Weavings you are about to purchase:</h3>
-			<% @order.cart.weavings.each do |weaving| %>
+			<h3>Du er ved at købe følgende produkter:</h3>
+			<% @order.cart.products.each do |product| %>
 				<li>
-					<%=h weaving.name %> is a weaving of type <%= weaving.weaving_type.name %> woven by <%= weaving.weaver.name %> using <%= weaving.wool_type.name %> wool and is selling for <%= number_to_currency(weaving.selling_price) %>.
+					<%=h product.name %> er <%= product.product_type.name %> produceret af <%= product.producer.name %>, og sælges for <%= (product.offer_price > 0) && product.offer_price || number_to_currency(product.selling_price) %>.
 				</li>
 			<% end %>
-			The total is <%=h number_to_currency @order.cart.total_price %> (+ $10 for shipping makes <%=h number_to_currency @order.cart.total_price + 10 %>)
+			Totalprisen er <%=h number_to_currency @order.cart.total_price %> (+ 50kr forsendelse giver <%=h number_to_currency @order.cart.total_price + 50 %>)
 			<% end %>
 	  <p><%= f.submit "Complete Order" %></p>
 	<% end %>

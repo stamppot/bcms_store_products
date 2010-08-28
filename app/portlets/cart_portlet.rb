@@ -1,9 +1,9 @@
 class CartPortlet < Portlet
   def render
     @cart = Cart.current_cart(session)
-    @weavings_in_cart = []
-    if @cart && @cart.weavings
-      @weavings_in_cart = @cart.weavings
+    @products_in_cart = []
+    if @cart && @cart.products
+      @products_in_cart = @cart.products
       @post_url = GOOGLE_CHECKOUT_CONFIGURATION[:use_sandbox] ? "https://sandbox.google.com/checkout/" : "https://checkout.google.com/"
       @post_url += "api/checkout/v2/checkout/Merchant/#{GOOGLE_CHECKOUT_CONFIGURATION[:merchant_id]}"
 

@@ -1,17 +1,17 @@
 <h1>Cart</h1>
-<% if @weavings_in_cart.empty? %>
+<% if @products_in_cart.empty? %>
 	Your cart is empty
 <% else %>
 	Your Cart Currently Contains
 	<ul>
-		<% @weavings_in_cart.each do |weaving| %>
+		<% @products_in_cart.each do |product| %>
 			<li>
-				<%= number_to_currency(weaving.selling_price) %>.
-				<a style="font-weight: bold;" class="dotted" id="weaving_<%= weaving.id.to_s %>_summary" href="/weavings/weaving?id=<%= weaving.id.to_s %>"><%= weaving.summary_description %></a>
-				<a href="/weavings/weaving?id=<%= weaving.id.to_s %>" id="weaving_<%= weaving.id.to_s %>_photo_link"><img style="border-width: 0px;" alt="photo" width="47px" height="35px" src="<%= weaving.weaving_photos[0] ? weaving.weaving_photos[0].attachment_link : 'broken' %>" id="weaving_<%= weaving.id.to_s %>_photo"></a>
-				<% form_for weaving, :url => { :controller => "/store", :action => "remove_from_cart" } do |f| %>
+				<%= number_to_currency(product.selling_price) %>.
+				<a style="font-weight: bold;" class="dotted" id="product_<%= product.id.to_s %>_summary" href="/products/product?id=<%= product.id.to_s %>"><%= product.summary_description %></a>
+				<a href="/products/product?id=<%= product.id.to_s %>" id="product_<%= product.id.to_s %>_photo_link"><img style="border-width: 0px;" alt="photo" width="47px" height="35px" src="<%= product.product_photos[0] ? product.product_photos[0].attachment_link : 'broken' %>" id="product_<%= product.id.to_s %>_photo"></a>
+				<% form_for product, :url => { :controller => "/store", :action => "remove_from_cart" } do |f| %>
 					<%= f.hidden_field :id %>
-					<%= image_submit_tag '/images/weavings/remove-from-cart.png' %>
+					<%= image_submit_tag '/images/products/remove-from-cart.png' %>
 				<% end %>
 			</li>
 		<% end %>
@@ -26,5 +26,5 @@
 			<%= image_submit_tag @img_src, @params %>
 		</form>
 	</div>
-	<p>Please check out within the hour otherwise the weavings will be removed from your cart (word better)</p>
+	<p>Please check out within the hour otherwise the products will be removed from your cart (word better)</p>
 <% end %>

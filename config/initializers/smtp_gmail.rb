@@ -5,7 +5,7 @@ ActionMailer::Base.smtp_settings = {
   :port => 587,
   :authentication => :plain,
   :enable_starttls_auto => true,
-  :user_name => "mano.cart.test.merchant@gmail.com",
-  :password => "puthe3habreq2ZacuStecR2x38WuGAsw",
-  :host => "mano.cart.test.merchant@gmail.com"
+  :user_name => "stamppot@gmail.com",
+  :password => "bzvj0y",
+  :host => "stamppot@gmail.com"
 }

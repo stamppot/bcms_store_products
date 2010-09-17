@@ -5,9 +5,11 @@ class Cart < ActiveRecord::Base
   def total_price
     total = 0
     products.each do |product|
-      total += product.selling_price
+      price = product.selling_price
+      price = product.offer_price if product.offer_price > 0
+      total += price
     end
-    total
+    "%05.2f" % ((total * 100).round / 100)
   end
 
   def total_price_in_cents

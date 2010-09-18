@@ -8,7 +8,6 @@ class OrdersController < ApplicationController
     @order = Order.find_by_token(params[:id])
   end
   
-  
   def paypal_express
     # Assume the current cart exists
     cart = Cart.current_cart(session)

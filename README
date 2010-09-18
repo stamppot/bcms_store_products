@@ -1,6 +1,6 @@
-# Mano Products Module for BrowserCMS
+# Store Products Module for BrowserCMS
 
-A module to allow Mano a Mano to sell Bolivian products on the internet.
+A module to create a webshop in BrowserCMS
 
 ## Installation
 These instructions are adapted from those found at http://www.browsercms.org/doc/guides/html/installing_modules.html.
@@ -13,9 +13,9 @@ This assumes you have the latest copy of the code from github on your machine.
         gem build bcms_store_products.gemspec
         sudo gem install bcms_store_products-1.0.0.gem
 
-At this point, the Mano Products gem should be installed as a gem on your system, and can be added to your projects.
+At this point, the Store Products gem should be installed as a gem on your system, and can be added to your projects.
 
-### B. Adding the Mano Products module to your project
+### B. Adding the Store Products module to your project
 In your BrowserCMS application, do the following steps.
 
 #### 1. Edit the config/environment.rb file

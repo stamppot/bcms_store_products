@@ -1,0 +1,16 @@
+<%= f.cms_text_field :item_number, :label => "Produktnummer" %>
+<%= f.cms_text_field :name, :label => "Navn" %>
+<%= f.cms_drop_down :producer_id, Producer.all(:order => "name").map{|e| [e.name, e.id]} %>
+<%= f.cms_drop_down :product_type_id, ProductType.all(:order => "name").map{|e| [e.name, e.id]} %>
+<%= f.cms_drop_down :food_type_id, FoodType.all(:order => "name").map{|e| [e.name, e.id]} %>
+<%= f.cms_text_field :purchase_price, :label => "Indkøbspris" %>
+<%= f.cms_text_field :selling_price, :label => "Salgspris" %>
+<%= f.cms_text_field :offer_price, :label => "Tilbudspris" %>
+<%= f.cms_file_field :product_photo_front, :label => "Foto" %>
+<% if @content_block && !@content_block.product_photos[0].attachment_link.blank? %>
+<p><b>Foto 1:</b> <br/><br/><img src="<%= @content_block.product_photos[0].attachment_link %>" alt="Eksempel Foto 1" height="480px" width="640px"><br/></p>
+<% end %>
+<%= f.cms_file_field :product_photo_back, :label => "Foto 2" %>
+<%= f.cms_file_field :product_photo_misc, :label => "Foto 3" %>
+<%= f.cms_text_field :summary_description, :label => "Kort beskrivelse" %>
+<%= f.cms_text_editor :description, :label => "Beskrivelse" %>

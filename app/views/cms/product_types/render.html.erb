@@ -1,0 +1,8 @@
+<p><b>Name:</b> <%= @content_block.name %></p>
+<% if false %>
+<p><b>Danish Name:</b> <%= @content_block.danish_name %></p>
+<% end %>
+<p><b>Lavt lagerniveau:</b> <%= @content_block.low_stock_level %></p>
+<p><b>Primær lager-bruger:</b> <%= @content_block.user.first_name %> <%= @content_block.user.last_name %></p>
+<p><b>Fotoeksempel:</b> <br/><br/><img src="<%= @content_block.attachment_link %>" alt="Example Photo" height="480px" width="640px"><br/></p>
+<p><b>Beskrivelse:</b> <%= @content_block.description %></p>

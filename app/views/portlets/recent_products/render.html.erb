@@ -1,0 +1,25 @@
+<link rel="stylesheet" type="text/css" href="/stylesheets/products/products.css" />
+
+<h1>What's New?</h1>
+<% @products.each do |product| %>
+	<% if product.published && !product.cart_id %>
+		<div class="productCard" id="ProductView_<%= product.id.to_s %>_productCard">
+		    <table cellspacing="0" cellpadding="0" class="productPhotoContainer">
+		        <tbody><tr><td style="padding: 0pt;">
+		            <a href="/products/product?id=<%= product.id.to_s %>" id="product_<%= product.id.to_s %>_photo_link"><img style="border-width: 0px;" alt="photo" width="235px" height="176px" src="<%= product.product_photos[0] ? product.product_photos[0].attachment_link : 'broken' %>" id="product_<%= product.id.to_s %>_photo"></a>
+		        </td></tr>
+		    </tbody></table>
+		    <div class="productSummaryContainer">
+		        <a style="font-weight: bold;" class="dotted" id="product_<%= product.id.to_s %>_summary" href="/products/product?id=<%= product.id.to_s %>"><%= product.summary_description %></a>
+		    </div>
+			<span style='text-align: center;'>
+			    <div class="productType" id="product_<%= product.id.to_s %>_type"><%= product.product_type.name %></div>
+				<b><%= number_to_currency(product.selling_price) %></b>
+				<% form_for product, :url => { :controller => "/store", :action => "add_to_cart" } do |f| %>
+					<%= f.hidden_field :id %>
+					<%= image_submit_tag '/images/products/add-to-cart.png' %>
+				<% end %>
+			</span>
+		</div>
+	<% end %>
+<% end %>

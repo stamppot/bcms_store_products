@@ -1,0 +1,9 @@
+<% if @products_to_browse %>
+<div class="shop_products">
+	<% @products_to_browse.in_groups_of(1) do |group| %>
+		<%= content_tag(:div, (group.collect! do |@product|
+			<%= render :partial => 'product'  %>
+		end ) ) %>
+		<% end %>
+	</div>
+	<% end %>

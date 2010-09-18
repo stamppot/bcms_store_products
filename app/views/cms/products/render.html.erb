@@ -1,0 +1,12 @@
+<p><b>Produktnummer:</b> <%= @content_block.item_number %></p>
+<p><b>Producent:</b> <%= @content_block.producer.name %></p>
+<p><b>Produkttype:</b> <%= @content_block.product_type.name %></p>
+
+<p><b>Indkøbspris:</b> <%= @content_block.purchase_price %></p>
+<p><b>Salgspris:</b> <%= @content_block.selling_price %></p>
+<p><b>Tilbudspris:</b> <%= @content_block.offer_price %></p>
+<p><b>Kort beskrivelse:</b> <%= @content_block.summary_description %></p>
+<p><b>Beskrivelse:</b> <%= @content_block.description %></p>
+<p><b>Foto 1:</b> <br/><br/><img src="<%= @content_block.product_photos[0].attachment_link %>" alt="Example Photo 1" height="480px" width="640px"><br/></p>
+<p><b>Foto 2:</b> <br/><br/><img src="<%= @content_block.product_photos[1].attachment_link %>" alt="Example Photo 2" height="480px" width="640px"><br/></p>
+<p><b>Foto 3:</b> <br/><br/><img src="<%= @content_block.product_photos[2].attachment_link %>" alt="Example Photo 2" height="480px" width="640px"><br/></p>

@@ -1,0 +1,8 @@
+<p><b>Navn:</b> <%= @content_block.name %></p>
+<p><b>Email:</b> <%= @content_block.email %></p>
+<p><b>Status:</b> <%= @content_block.payer_status %></p>
+<p><b>Gade/vej:</b> <%= @content_block.street_line_2 %></p>
+<p><b>Gade/vej ekstra:</b> <%= @content_block.street_line_1 %></p>
+<p><b>Postnr:</b> <%= @content_block.zip %></p>
+<p><b>By:</b> <%= @content_block.city %></p>
+<p><b>Land:</b> <%= @content_block.country.blank? && "Danmark" || @content_block.country %></p>

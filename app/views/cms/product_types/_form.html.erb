@@ -1,0 +1,6 @@
+<%= f.cms_text_field :name, :label => "Navn" %>
+<%# f.cms_text_field :danish_name %>
+<%= f.cms_text_field :low_stock_level, "Lavt lagerniveau" %>
+<%= f.cms_drop_down :user_id, User.find(:all, :include => 'user_group_memberships', :include => 'groups', :order => 'first_name', :conditions => ['groups.group_type_id = ?', GroupType.find_by_name('CMS User').id]).map{|e| [e.first_name + " " + e.last_name, e.id]}, :label => "Primær bruger af lager" %>
+<%= f.cms_file_field :attachment_file, :label => "Fotoeksempel" %>
+<%= f.cms_text_editor :description, :label => "Beskrivelse" %>

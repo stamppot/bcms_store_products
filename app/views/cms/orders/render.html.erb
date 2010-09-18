@@ -1,0 +1,38 @@
+<div class="customer_info">
+<p><b>Navn:</b> <%= @content_block.name %></p>
+<p><b>Email:</b> <%= @content_block.email %></p>
+<p><b>Status:</b> <%= @content_block.payer_status %></p>
+<p><b>Gade/vej:</b> <%= @content_block.street_line_2 %></p>
+<p><b>Gade/vej ekstra:</b> <%= @content_block.street_line_1 %></p>
+<p><b>Postnr:</b> <%= @content_block.zip %></p>
+<p><b>By:</b> <%= @content_block.city %></p>
+<p><b>Land:</b> <%= @content_block.country.blank? && "Danmark" || @content_block.country %></p>
+</div>
+
+<table class="line_items" cellspacing=0>
+<% if @content_block.line_items %>
+	<tr class="content_blocktitle">
+		<td rowspan="2">Antal</td>
+		<td rowspan="2">Beskrivelse</td>
+		<td colspan="2" align="center">Pris</td>
+	</tr>
+	<tr class="content_blocktitle">
+		<td>Stuk</td>
+		<td>Total</td>
+	</tr>
+<% end %>
+<% total_price = @line_items.inject(0) {|sum, item| sum + item.unit_price * item.quantity } %>
+<% @content_block.line_items.each do |item| %>
+	<% product = item.product %>
+	<tr>
+		<td><%= item.quantity %></td>
+		<td><%= product.name %></td>
+		<td align="right"><%= danish_price(item.unit_price) %></td>
+		<td align="right"><%= danish_price(item.unit_price * item.quantity) %></td>
+	</tr>
+<% end %>
+	<tr>
+		<td colspan="3" align="right"><strong>Total:</strong></td>
+		<td id="totalcell"><%= danish_price(total_price) %></td>
+</table>
+

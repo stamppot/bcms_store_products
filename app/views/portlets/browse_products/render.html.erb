@@ -1,0 +1,34 @@
+<div class="product_types">
+<% @product_types.each do |product_type| %>
+	<ul class="product_type">
+		<li>
+			<%= link_to "<img src='#{product_type.attachment.file_path}' width=100 align='middle' alt='' />" + product_type.name, '?type=' + product_type.id.to_s %>
+		</li>
+	</ul>
+<% end %>
+</div>
+
+<% if @search_results_summary %>
+	<h3><%= @search_results_summary %></h3>
+	<% if @products_to_browse %>
+       <div class="shop_products">
+		<% @products_to_browse.in_groups_of(1) do |group| %>
+<%= content_tag(:div, (group.collect! do |product| 
+	img_src = if product.blank? || product.product_photos.blank? || product.product_photos.first.blank?
+		"/themes/dyrgod/images/logo_no_text_small.png"
+	else
+		product.product_photos.first.attachment.file_path
+	end
+  # show_product = "<div class='product'><img src='#{img_src}' /><br/>#{product && product.name}<br/>#{truncate(product && product.summary_description || "")}</div>"
+	product_name = product && "<div class='title'>#{product.name}</div>"
+	product_summ = product && truncate(product.summary_description, 140)
+	product_price = product && "<div class='price'>#{product.selling_price}</div>"
+	product_price = product.offer_price if product.offer_price > 0
+  show_product = "<table class='product'><tr><td class='photo'><img src='#{img_src}' /></td><td class='product_info'><div class='product_name'>#{product_name}</div><div class='summary'>#{product_summ}</div><div class='product_price'>#{product_price}</div></td></tr></table>"
+
+content_tag(:div, show_product) 
+	end ) ) %>
+<% end %>
+	</div>
+	<% end %>
+<% end %>

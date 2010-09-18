@@ -1,0 +1,75 @@
+				<% if @order.payment_processor == 'paypal_express' %>
+					<%= f.hidden_field :paypal_express_token %>
+					<p>Din paypal status er: <%=h @order.payer_status %></p>
+					<p>Din paypal adresse status er: <%=h @order.address_status %></p>
+				<% end %>
+				<p>Order Financial State: <%=h @order.financial_state %></p>
+				<p>Order Fulfillment State: <%=h @order.fulfillment_state %></p>
+			    <p>Navn: <%=h @order.first_name %> <%=h @order.last_name %></p>
+				<p>Contact Email: <%=h @order.email %></p>
+				<% if @order.payment_processor == 'google_checkout' %>
+					<p>Google Order number: <%=h @order.google_order_number %></p>
+					<%= f.hidden_field :google_order_number %>
+				<% end %>
+		  <p><%= f.submit "Complete Order" %></p>
+
+	<hr/>
+
+	<table class="order" cellspacing=0>
+	<% if @items %>
+		<tr class="carttitle">
+			<td rowspan="2">Antal</td>
+			<td rowspan="2">Beskrivelse</td>
+			<td colspan="2" align="center">Pris</td>
+		</tr>
+		<tr class="carttitle">
+			<td>Stuk</td>
+			<td>Total</td>
+		</tr>
+	<% end %>
+	<% total_price = @items.inject(0) {|sum, item| sum + item.unit_price * item.quantity } %>
+	<% @items.each do |item| %>
+		<% product = item.product %>
+		<tr>
+			<td><%= item.quantity %></td>
+			<td><%= product.name %></td>
+			<td align="right"><%= danish_price(item.unit_price) %></td>
+			<td align="right"><%= danish_price(item.unit_price * item.quantity) %></td>
+		</tr>
+	<% end %>
+		<tr>
+			<td colspan="3" align="right"><strong>Total:</strong></td>
+			<td id="totalcell"><%= danish_price(total_price) %></td>
+	</table>
+
+	<h3>Sendes til</h3>
+	<table class="customer_info">
+		<tr>
+			<td>Navn:</td>
+			<td><%= @order.ship_to_name %></td>
+		</tr>
+		<tr>
+			<td>Email:</td>
+			<td><%= @order.email %></td>
+		</tr>
+		<tr>
+			<td>Adresse:</td>
+			<td><%= @order.ship_to_street_line_1 %></td>
+		</tr>
+		<tr>
+			<td>Postnr:</td>
+			<td><%= @order.ship_to_zip %></td>
+		</tr>
+		<tr>
+			<td>By:</td>
+			<td><%= @order.ship_to_city %></td>
+		</tr>
+		<tr>
+			<td>Land:</td>
+			<td><%= @order.ship_to_country_name %></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td></td>
+		</tr>
+	</table>

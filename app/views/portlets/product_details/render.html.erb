@@ -1,0 +1,20 @@
+<p><b>Producent:</b> <%= @product.producer.name %></p>
+<p><b>Producentfoto:</b> <br/><br/><img src="<%= @product.producer.attachment_link %>" alt="Producer Photo" height="480px" width="640px"><br/></p>
+<p><b>Producentbeskrivelse:</b> <br/><br/><%= @product.producer.description %> <br/></p>
+
+<p><b>Produkttype:</b> <%= @product.product_type.name %></p>
+<% if !@product.food_type.blank? %>
+	<p><b>Fodertype:</b> <%= @product.food_type.name %></p>
+<% end %>
+<p><b>Pris:</b> <%= (@product.offer_price > 0) && @product.offer_price || number_to_currency(@product.selling_price) %></p>
+<p><b>Kort beskrivelse:</b> <%= @product.summary_description %></p>
+<p><b>Beskrivelse:</b> <%= @product.description %></p>
+<% if @product.product_photos[0] %>
+<p><b>Billede:</b> <br/><br/><img src="<%= @product.product_photos[0].attachment_link %>" alt="Example Photo front" height="480px" width="640px"><br/></p>
+<% end %>
+<% @product.product_photos[1] %>
+<p><b>Billede 2:</b> <br/><br/><img src="<%= @product.product_photos[1].attachment_link %>" alt="Example Photo back" height="480px" width="640px"><br/></p>
+<% end %>
+<% @product.product_photos[2] %>
+<p><b>Billede 3:</b> <br/><br/><img src="<%= @product.product_photos[2].attachment_link %>" alt="Example Photo misc" height="480px" width="640px"><br/></p>
+<% end %>

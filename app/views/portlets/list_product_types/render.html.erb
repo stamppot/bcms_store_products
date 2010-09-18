@@ -1,0 +1,9 @@
+<div class="product_types">
+<% @product_types.each do |product_type| %>
+	<ul class="product_type">
+		<li>
+			<%= link_to "<img src='#{product_type.attachment.file_path}' width=100 align='middle' alt='' />" + product_type.name, '?type=' + product_type.id.to_s %>
+		</li>
+	</ul>
+<% end %>
+</div>

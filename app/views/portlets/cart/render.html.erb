@@ -1,30 +1,77 @@
-<h1>Cart</h1>
+<div id="shopping_cart_sidebar">
+<h1>Indkøbskurv</h1>
 <% if @products_in_cart.empty? %>
-	Your cart is empty
+	Din indkøbskurv er tom
 <% else %>
-	Your Cart Currently Contains
+	I indkøbskurven:
+
+<table class="line_items">
+<%# if @cart.line_items %>
+	<tr class="carttitle">
+		<td rowspan="2">Antal</td>
+		<td rowspan="2">Beskrivelse</td>
+		<td colspan="2">Pris</td>
+	</tr>
+	<tr class="carttitle">
+		<td>Stuk</td>
+		<td>Total</td>
+	</tr>
+<%# end %>
+<% total_price = @line_items.inject(0) {|sum, item| sum + item.unit_price * item.quantity } %>
+<% @cart.line_items.each do |item| %>
+	<% product = item.product %>
+	<tr>
+		<td><%= item.quantity %></td>
+		<td><%= product.name %></td>
+		<td align="right"><%= danish_price(item.unit_price) %></td>
+		<td align="right"><%= danish_price(item.unit_price * item.quantity) %></td>
+	</tr>
+<% end %>
+	<tr>
+		<td colspan="3" align="right"><strong>Total:</strong></td>
+		<td id="totalcell"><%= danish_price(total_price) %></td>
+</table>
+<hr/>
+
 	<ul>
-		<% @products_in_cart.each do |product| %>
+		<% @line_items.each do |item| %>
 			<li>
-				<%= number_to_currency(product.selling_price) %>.
-				<a style="font-weight: bold;" class="dotted" id="product_<%= product.id.to_s %>_summary" href="/products/product?id=<%= product.id.to_s %>"><%= product.summary_description %></a>
-				<a href="/products/product?id=<%= product.id.to_s %>" id="product_<%= product.id.to_s %>_photo_link"><img style="border-width: 0px;" alt="photo" width="47px" height="35px" src="<%= product.product_photos[0] ? product.product_photos[0].attachment_link : 'broken' %>" id="product_<%= product.id.to_s %>_photo"></a>
-				<% form_for product, :url => { :controller => "/store", :action => "remove_from_cart" } do |f| %>
-					<%= f.hidden_field :id %>
-					<%= image_submit_tag '/images/products/remove-from-cart.png' %>
+
+				<% form_for item.product, :url => { :controller => "/store", :action => "remove_from_cart" } do |f| %>
+                           <table>
+				<tr>
+                                <td><a href="/products/product?id=<%= item.product.id %>" id="product_<%= item.product_id.to_s %>_photo_link">
+<img style="border-width: 0px;" alt="photo" width="80px" src="<%= item.product.product_photos[0] ? item.product.product_photos[0].attachment_link : '/broken.png' %>" id="product_<%= item.product.id.to_s %>_photo"></a>
+                                </td>
+                                <td style="font-size: 12px;" <%= colspan='2' if item.quantity > 1 %> >
+                                <%= item.quantity > 1 && "* #{item.quantity}" || "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" %>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				</td>
+                                 <td><%= image_submit_tag '/images/shopping_cart_remove_small.png' %></td>
+                                </tr>
+                                <tr><td colspan="2" class="cart_product_name">
+<a style="font-weight: bold;" class="dotted" id="product_<%= item.product.id %>_name" href="/products/product?id=<%= item.product.id %>"><%= truncate(item.product.name, 60) %>
+</a>
+</td>
+
+<td class='cart_price' align="right"><%= danish_price(item.unit_price * item.quantity) %></td>
+                                </tr>
+                                </table>
+					<%= f.hidden_field :id, :value => item.product_id %>
 				<% end %>
 			</li>
 		<% end %>
 	</ul>
-	<p>Total: <% if(@cart) %> <%= number_to_currency @cart.total_price %> <% end %></p>
-	<%= link_to image_tag("https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif"), '/orders/new/paypal_express' %>
-	<br />or use<br />
+        <p/>
+	<p>Total: <% if(@cart) %> <%= danish_price @cart.total_price %> <% end %></p>
+	<%# link_to image_tag("https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif"), '/orders/new/paypal_express' %>
+	<br /><br />
 	<div id='google_checkout_button'>
 	    <form method="POST" action="<%= @post_url %>">
-			<%= hidden_field_tag :cart, @cart_xml_b64 %>
-			<%= hidden_field_tag :signature, @signature %>
-			<%= image_submit_tag @img_src, @params %>
+			<%# hidden_field_tag :cart, @cart_xml_b64 %>
+			<%# hidden_field_tag :signature, @signature %>
+			<%# image_submit_tag @img_src, @params %>
 		</form>
 	</div>
-	<p>Please check out within the hour otherwise the products will be removed from your cart (word better)</p>
+	<!--<p>Please check out within the hour otherwise the products will be removed from your cart (word better)</p>-->
 <% end %>
+</div>

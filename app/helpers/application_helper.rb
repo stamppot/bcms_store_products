@@ -13,6 +13,7 @@ module ApplicationHelper
   end
   
   def danish_price(price)
-    price.to_s.gsub(".", ",")
+    pr = "%05.2f" % ((price * 100).round / 100).gsub(".", ",")
+    pr << "0" if pr[-3,1] = ","
   end
 end

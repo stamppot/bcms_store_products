@@ -1,5 +1,5 @@
 <% if @order %>
-	<% form_for :order, @order, :url => { :action => 'charge' } do |f| %>
+	<% form_for :order, @order, :url => { :action => 'create', :method => 'post' } do |f| %>
 		<%= f.error_messages %>
 		<% if @order.payment_processor == 'paypal_express' && @order.paypal_express_token.blank? %>
 		    Token is blank, should probably redirect or something
@@ -29,11 +29,33 @@
 				Land: <%=h @order.ship_to_country_name %> <br />
 			</p>
 			<h3>Du er ved at købe følgende produkter:</h3>
-			<% @order.cart.products.each do |product| %>
-				<li>
-					<%=h product.name %> er <%= product.product_type.name %> produceret af <%= product.producer.name %>, og sælges for <%= (product.offer_price > 0) && product.offer_price || number_to_currency(product.selling_price) %>.
-				</li>
+			<table class="line_items" cellspacing=0>
+			<% if @order.line_items %>
+				<tr class="content_blocktitle">
+					<td rowspan="2">Antal</td>
+					<td rowspan="2">Beskrivelse</td>
+					<td colspan="2" align="center">Pris</td>
+				</tr>
+				<tr class="content_blocktitle">
+					<td>Stuk</td>
+					<td>Total</td>
+				</tr>
 			<% end %>
+			<% total_price = @order.line_items.inject(0) {|sum, item| sum + item.unit_price * item.quantity } %>
+			<% @order.line_items.each do |item| %>
+				<% product = item.product %>
+				<tr>
+					<td><%= item.quantity %></td>
+					<td><%= product.name %></td>
+					<td align="right"><%= danish_price(item.unit_price) %></td>
+					<td align="right"><%= danish_price(item.unit_price * item.quantity) %></td>
+				</tr>
+			<% end %>
+				<tr>
+					<td colspan="3" align="right"><strong>Total:</strong></td>
+					<td id="totalcell"><%= danish_price(total_price) %></td>
+			</table>
+			
 			Totalprisen er <%=h number_to_currency @order.cart.total_price %> (+ 50kr forsendelse giver <%=h number_to_currency @order.cart.total_price + 50 %>)
 			<% end %>
 	  <p><%= f.submit "Complete Order" %></p>

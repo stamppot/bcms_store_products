@@ -1,4 +1,14 @@
 class OrdersController < ApplicationController
+  
+  def index
+    
+  end
+  
+  def show
+    @order = Order.find_by_token(params[:id])
+  end
+  
+  
   def paypal_express
     # Assume the current cart exists
     cart = Cart.current_cart(session)
@@ -22,7 +32,7 @@ class OrdersController < ApplicationController
     end
   end
 
-  def charge
+  def create # was: charge
     # Assume the current cart exists
     cart = Cart.current_cart(session)
     # Google checkout creates an order using the polling api
@@ -34,6 +44,7 @@ class OrdersController < ApplicationController
       @order.fulfillment_state = 'NEW'
     end
 
+    @order.token = rand(36**8).to_s(36)
     @order.ip_address = request.remote_ip
     if @order.save
       @transaction = @order.purchase

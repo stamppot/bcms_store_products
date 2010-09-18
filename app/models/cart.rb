@@ -1,12 +1,20 @@
 class Cart < ActiveRecord::Base
   has_many :products
+  has_many :line_items
   has_one :order
 
+  # attr_reader :items
+  attr_reader :total_price
+  
+  def add_product(product)
+    @items << LineItem.for_product(product)
+    @total_price += product.price
+  end
+  
   def total_price
     total = 0
-    products.each do |product|
-      price = product.selling_price
-      price = product.offer_price if product.offer_price > 0
+    line_items.each do |item|
+      price = item.unit_price * item.quantity
       total += price
     end
     "%05.2f" % ((total * 100).round / 100)
@@ -16,7 +24,12 @@ class Cart < ActiveRecord::Base
     (total_price * 100).to_i
   end
 
-  # Returns the current cart if the user has one or nill if they don't have a cart yet
+  def empty!
+    @items = []
+    @total_price = 0
+  end
+
+  # Returns the current cart if the user has one or nil if they don't have a cart yet
   def self.current_cart(session)
     if(session[:cart_id] && Cart.exists?(session[:cart_id]))
       cart = Cart.find(session[:cart_id])

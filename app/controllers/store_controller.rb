@@ -54,6 +54,16 @@ class StoreController < ApplicationController
 	end          
                    
   def shipping
+		redirect_to :confirm_order
+	end
+	
+	def confirm_order
+		redirect_to :finish_order
+	end
+	
+	def finish_order
+		flash["Du har købt noget i butikken!"]
+		redirect_to '/shop'
 	end
 	
 	def checkout

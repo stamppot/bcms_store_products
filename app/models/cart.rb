@@ -3,7 +3,7 @@ class Cart < ActiveRecord::Base
   has_many :line_items
   has_one :order
 
-  # attr_reader :items
+  attr_reader :items
   attr_reader :total_price
   
   def add_product(product)

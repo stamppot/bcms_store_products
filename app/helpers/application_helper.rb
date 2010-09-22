@@ -13,7 +13,18 @@ module ApplicationHelper
   end
   
   def danish_price(price)
-    pr = "%05.2f" % ((price * 100).round / 100).gsub(".", ",")
+    pr = "%05.2f" % ((price * 100).round / 100.0).gsub(".", ",")
     pr << "0" if pr[-3,1] = ","
+  end
+  
+  def product_photo(product)
+    default_photo = "/themes/dyrgod/images/logo_no_text_small.png"
+		if product.product_photos.any?
+			if product.product_photos.first.attachment
+				default_photo = product.product_photos.first.attachment.file_path
+			else
+				default_photo = product.product_photos.second.attachment.file_path if product.product_photos.second.attachment
+			end
+		end
   end
 end

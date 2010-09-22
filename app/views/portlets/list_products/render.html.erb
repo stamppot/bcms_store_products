@@ -1,9 +1,39 @@
-<% if @products_to_browse %>
+<% if @products_to_browse && @products_to_browse.any? %>
 <div class="shop_products">
 	<% @products_to_browse.in_groups_of(1) do |group| %>
-		<%= content_tag(:div, (group.collect! do |@product|
-			<%= render :partial => 'product'  %>
-		end ) ) %>
+	<div>
+		<% group.each do |product| 
+			img_src = if product.product_photos.blank? || product.product_photos.first.blank? || product.product_photos.first.attachment.blank?
+				"/themes/dyrgod/images/logo_no_text_small.png"
+			else
+				product.product_photos.first.attachment.file_path
+			end
+			product_name = product && "<div class='title'>#{product.name}</div>"
+			product_summ = product && truncate(product.summary_description || "", 150) %>
+
+			<table class='product product_<%= product.item_number || product.id %>'>
+				<tr>
+					<td class='product_photo'>
+						<a href="/shop/product?id=<%= product.id %>" >
+							<img src='<%= img_src %>' />
+						</a>
+					</td>
+					<td class='product_info'>
+						<div class='product_name'><%= product_name %></div>
+						<div class='summary'><%= product_summ %></div>
+						<span class='cart'>
+							<% form_for product, :url => { :controller => "/store", :action => "add_to_cart" } do |f| %>
+							<%= f.hidden_field :id %>
+							<span class='product_price'><%= normal_or_reduced_price(product) %></span>
+							<%= image_submit_tag '/images/shopping_cart_small.png', :title => "Put i indkøbskurven" %>
+							<% end %>
+						</span>
+					</td>
+				</tr>
+			</table>
 		<% end %>
-	</div>
+		</div>
 	<% end %>
+	</div>
+</div>
+<% end %>

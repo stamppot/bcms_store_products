@@ -20,7 +20,7 @@
 			<% end %>
 	  <p><%= f.submit "Complete Order" %></p>
 	<% end %>
-<% else %>
+<%# else %>
 	Google checkout is still processing your request, please reload the page to check again.
 <% end %>
 
@@ -63,5 +63,22 @@
 	<tr>
 		<td colspan="3" align="right"><strong>Total:</strong></td>
 		<td id="totalcell"><%= danish_price(total_price) %></td>
+	</tr>
 </table>
+<% end %>
 
+<p><br/></p>
+<table class="order_progress" cellspacing=0>
+  <tr class="progress_bar">
+    <td class='progress_state first'><img src="/images/checkout_bullet.gif" />&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="last">&nbsp;</td>
+  </tr>
+  <tr>
+    <td class="progress_current">Levering</td>
+    <td>Betaling</td>
+    <td>Bekræft</td>
+    <td>Færdig!</td>
+  </tr>
+</table>

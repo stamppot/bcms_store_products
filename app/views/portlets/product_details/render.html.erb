@@ -1,20 +1,67 @@
-<p><b>Producent:</b> <%= @product.producer.name %></p>
-<p><b>Producentfoto:</b> <br/><br/><img src="<%= @product.producer.attachment_link %>" alt="Producer Photo" height="480px" width="640px"><br/></p>
-<p><b>Producentbeskrivelse:</b> <br/><br/><%= @product.producer.description %> <br/></p>
-
-<p><b>Produkttype:</b> <%= @product.product_type.name %></p>
-<% if !@product.food_type.blank? %>
-	<p><b>Fodertype:</b> <%= @product.food_type.name %></p>
-<% end %>
-<p><b>Pris:</b> <%= (@product.offer_price > 0) && @product.offer_price || number_to_currency(@product.selling_price) %></p>
-<p><b>Kort beskrivelse:</b> <%= @product.summary_description %></p>
-<p><b>Beskrivelse:</b> <%= @product.description %></p>
-<% if @product.product_photos[0] %>
-<p><b>Billede:</b> <br/><br/><img src="<%= @product.product_photos[0].attachment_link %>" alt="Example Photo front" height="480px" width="640px"><br/></p>
-<% end %>
-<% @product.product_photos[1] %>
-<p><b>Billede 2:</b> <br/><br/><img src="<%= @product.product_photos[1].attachment_link %>" alt="Example Photo back" height="480px" width="640px"><br/></p>
-<% end %>
-<% @product.product_photos[2] %>
-<p><b>Billede 3:</b> <br/><br/><img src="<%= @product.product_photos[2].attachment_link %>" alt="Example Photo misc" height="480px" width="640px"><br/></p>
+<% if @product %>
+<% @page_title = @product.name %>
+<div class="productdetails">
+   <div class="header">
+	<div class="productdetails_price"><%= normal_or_reduced_price(@product) %></div>
+	<div class="productdetails_name"><%= @product.name %></div>
+   </div>
+	<table class="productdetails">
+		<tr>
+			<td>
+				<table>
+					<tr>
+						<td class="product_details_photo">
+							<img id="product_photo" src="<%= product_photo(@product) %>" alt="Example Photo front" width="320px">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div class="more_product_photos">Flere billeder:</div>
+						</td>
+					</tr>
+					<tr>
+						<% @product.product_photos.select {|p| p.attachment_link}.each do |photo| %>
+						<td class="product_alternate_photos">
+							<a href="/shop/product?id=<%= @product.id %>" onclick="$('product_photo').src = <%= photo.attachment_link %>">
+  							<img class="product_photo_mini" src="<%= photo.attachment_link %>"  />
+							</a>
+						</td>
+						<% end %>
+					</tr>
+				</table>
+			</td>
+			<td>
+				<table>
+					<tr>
+						<td>
+							<tr>
+								<td class="product_details_description">
+									<%= @product.description.blank? && @product.summary_description || @product.description %>
+								</td>
+							</tr>
+							<tr>
+								<td class="product_details_producer">Producent: <%= @product.producer.name %></td>
+							</tr>
+							<tr>
+								<td>
+									<% if @product.offer_price > 0 %>
+									<div class="price_before">Pris: <%= danish_price(@product.selling_price) %></div><div class="price_bonus">Tilbudspris: <%= danish_price(@product.offer_price) %></div>
+									<% else %>
+									<div class="price_normal">Pris: <%= danish_price(@product.selling_price) %></div>
+									<% end %>
+								</td>
+								<td>
+									<% form_for @product, :url => { :controller => "/store", :action => "add_to_cart" } do |f| %>
+									<%= f.hidden_field :id %>
+									<%= image_submit_tag '/images/shopping_cart_small.png' %>
+									<% end %>									
+								</td>
+							</tr>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+</div>
 <% end %>

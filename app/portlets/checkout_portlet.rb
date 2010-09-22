@@ -8,10 +8,11 @@ class CheckoutPortlet < Portlet
       redirect_to '/shop'
     else
       @order = Order.new
+      @order.line_items = @cart.line_items
     end    
   end
-  
-  def create
+
+  def create # was: charge
     # Assume the current cart exists
     cart = Cart.current_cart(session)
     # Google checkout creates an order using the polling api

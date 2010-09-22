@@ -1,12 +1,11 @@
 <% @page_title = "Checkout" %>
-<% if @order %>
-	<% form_for :order, @order, :url => { :action => 'create', :method => 'post' } do |f| %>
-		<%= f.error_messages %>
+<% if false %>
+	<% if @order %>
 		<% if @order.payment_processor == 'paypal_express' && @order.paypal_express_token.blank? %>
 		    Token is blank, should probably redirect or something
 		<% else %>
 			<% if @order.payment_processor == 'paypal_express' %>
-				<%= f.hidden_field :paypal_express_token %>
+				<%# f.hidden_field :paypal_express_token %>
 				<p>Din paypal status er: <%=h @order.payer_status %></p>
 				<p>Din paypal adresse status er: <%=h @order.address_status %></p>
 			<% end %>
@@ -16,16 +15,14 @@
 			<p>Contact Email: <%=h @order.email %></p>
 			<% if @order.payment_processor == 'google_checkout' %>
 				<p>Google Order number: <%=h @order.google_order_number %></p>
-				<%= f.hidden_field :google_order_number %>
+				<%# f.hidden_field :google_order_number %>
 			<% end %>
-	  <p><%= f.submit "Complete Order" %></p>
-	<% end %>
 	<% end %>
 <% else %>
 	Google checkout is still processing your request, please reload the page to check again.
+<% end %>    
 <% end %>
-
-<hr/>
+       
 
 <% if @order %>
 <table class="line_items" cellspacing=0>
@@ -58,6 +55,7 @@
 <h3>Sendes til</h3>
 <table class="customer_info">
 	<% form_for @order, :url => { :controller => "/orders", :action => "create" } do |f| %>
+	<%= f.error_messages %>
 	<%= f.hidden_field :id, :value => @order.id %>
 	<tr>
 		<td>Navn:</td>
@@ -85,7 +83,7 @@
 	</tr>
 	<tr>
 		<td></td>
-		<td><%= image_submit_tag '/images/shopping_cart_accept.png' %></td>
+		<td><%= submit_tag 'Bestil' %></td>
 	</tr>
   <% end %>
 </table>

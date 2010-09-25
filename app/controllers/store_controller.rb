@@ -105,17 +105,22 @@ class StoreController < ApplicationController
 	
 	def confirm_order
 		@cart = Cart.current_cart(session)
-		flash[:error] = "Wrong cart!" unless @cart.id.to_s == params["order"]["id"]
 		@order = @cart.order
+		if @cart.id.to_s == params["order"]["id"].to_s
+			@order.confirm = true
+			@order.confirmed_on = DateTime.now
+		else
+			flash[:error] = "Wrong cart!"
+		end
 		puts "CONFIRM_ORDER: #{@order.id}"
-		@cart.line_items.each {|item| @order.line_items << item; item.save }
+		# @cart.line_items.each {|item| @order.line_items << item; item.save }
 		if @order.save
 			@cart.order = @order
-			redirect_to '/shop/payment'
+			redirect_to '/shop/'
 		else
 			flash[:error] = "error"
 			flash[:record] = params["order"]
-			redirect_to '/shop/shipping'
+			redirect_to '/shop/order_confirmation'
 		end
 		redirect_to '/shop/order_confirmation'
 	end

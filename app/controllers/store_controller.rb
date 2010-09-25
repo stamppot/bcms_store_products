@@ -116,13 +116,14 @@ class StoreController < ApplicationController
 		# @cart.line_items.each {|item| @order.line_items << item; item.save }
 		if @order.save
 			@cart.order = @order
+			# @cart.empty!
 			redirect_to '/shop/'
 		else
 			flash[:error] = "error"
 			flash[:record] = params["order"]
 			redirect_to '/shop/order_confirmation'
 		end
-		redirect_to '/shop/order_confirmation'
+		# redirect_to '/shop/order_confirmation'
 	end
 	
 	# def finished_order

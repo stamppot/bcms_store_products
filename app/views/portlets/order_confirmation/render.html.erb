@@ -77,7 +77,7 @@
 		<%= f.error_messages %>
 		<%= f.hidden_field :id, :value => @order.id %>
 		<td>&nbsp;</td>
-		<td align="right"><%= submit_tag 'Godkend Ordre', :class => "button wide", :size => 100 %></a></td>
+		<td align="right"><%= submit_tag 'Godkend Ordre', :method => "post", :class => "button wide", :size => 100 %></a></td>
 		<% end %>
 	</tr>
 </table>

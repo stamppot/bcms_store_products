@@ -1,0 +1,40 @@
+<% @page_title = "Betaling" %>
+
+<h3>Betaling...</h3>
+<table class="customer_info">
+  <% form_for @order, :url => { :controller => "/store", :action => "pay_order" } do |f| %>
+	<%= f.error_messages %>
+	<%= f.hidden_field :id, :value => @order.id %>
+	<tr>
+		<td>Betaling:</td>
+		<td><%= f.text_field :ship_to_name %></td>
+	</tr>
+	<tr>
+		<td>Tralala:</td>
+		<td><%= f.text_field :email %></td>
+	</tr>
+	<tr>
+		<td>Hovsasa:</td>
+		<td><%= f.text_field :ship_to_street_line_1 %></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td><%= submit_tag 'Fortsæt' %></td>
+	</tr>
+    <% end %>
+</table>
+<p><br/></p>
+<table class="order_progress" cellspacing=0>
+  <tr class="progress_bar">
+    <td class="first">&nbsp;</td>
+    <td class='progress_state'><img src="/images/checkout_bullet.gif" />&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class="last">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>Levering</td>
+    <td class="progress_current">Betaling</td>
+    <td>Bekræft</td>
+    <td>Færdig!</td>
+  </tr>
+</table>

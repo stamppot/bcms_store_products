@@ -1,0 +1,101 @@
+ <% @page_title = "Ordrebekræftelse" %>
+
+<h1>Ordrebekræftelse</h1>
+
+<table class="order_confirmation">
+	<tr>
+		<td>
+			<table class="shipping_products">
+				<tr class="title">
+					<td>Leveringsadresse <span class="correct"><a href="/shop/shipping">(Ret)</a></span></td>
+				</tr>
+				<tr>
+					<td><%= @order.name %></td>
+				</tr>
+				<tr>
+					<td><%= @order.street %></td>
+				</tr>
+				<tr>
+					<td><%= @order.zip %> <%= @order.ship_to_city %></td>
+				</tr>
+				<tr>
+					<td><%= @order.country %></td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+				</tr>
+				<tr class="title">
+					<td>Forsendelse <span class="correct"><a href="/shop/shipping">(Ret)</a></span></td>
+				</tr>
+				<tr>
+					<td>Fragt (39,00)</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+				</tr>
+				<tr class="title">
+					<td>Betalingsinformation <span class="correct"><a href="/shop/payment">(Ret)</a></span></td>
+				</tr>
+				<tr>
+					<td><%= @order.card_holder %></td>
+				</tr>
+				<tr>
+					<td><%= @order.card_number %></td>
+				</tr>
+				<tr>
+					<td><%= @order.card_security %></td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+				</tr>
+			</table>
+		</td>
+		<td>
+			<table class="order_products" cellspacing=0>
+			<% if @order.line_items %>
+				<tr class="title">
+					<td>Produkter <span class="correct"><a href="/shop/shipping_cart">(Ret)</a></span></td>
+					<td></td>
+				</tr>
+				<% total_price = @order.line_items.inject(0) {|sum, item| sum + item.unit_price * item.quantity } %>
+				<% @order.line_items.each do |item| %>
+					<% product = item.product %>
+					<tr class="cart_product">
+						<td><%= item.quantity %> x <%= product.name %></td>
+						<td align="right"><%= danish_price(item.unit_price * item.quantity) %></td>
+					</tr>
+				<% end %>
+			<% end %>
+				<tr>
+					<td colspan="3" align="right"><strong>Total:</strong></td>
+					<td id="totalcell"><%= danish_price(total_price) %></td>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<% form_for @order, :url => confirm_order_path do |f| %>
+		<%= f.error_messages %>
+		<%= f.hidden_field :id, :value => @order.id %>
+		<td>&nbsp;</td>
+		<td align="right"><%= submit_tag 'Godkend Ordre', :class => "button wide", :size => 100 %></a></td>
+		<% end %>
+	</tr>
+</table>
+
+
+<p><br/></p>
+<table class="order_progress" cellspacing=0>
+  <tr class="progress_bar">
+    <td class="first">&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td class='progress_state'><img src="/images/checkout_bullet.gif" />&nbsp;</td>
+    <td class="last">&nbsp;</td>
+  </tr>
+  <tr>
+    <td>Levering</td>
+    <td>Betaling</td>
+    <td class="progress_current">Bekræft</td>
+    <td>Færdig!</td>
+  </tr>
+</table>

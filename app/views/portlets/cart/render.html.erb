@@ -40,7 +40,7 @@
 				<% form_for item.product, :url => { :controller => "/store", :action => "remove_from_cart" } do |f| %>
                            <table>
 				<tr>
-                                <td><a href="/products/product?id=<%= item.product.id %>" id="product_<%= item.product_id.to_s %>_photo_link">
+                                <td><a href="/shop/product?id=<%= item.product.id %>" id="product_<%= item.product_id.to_s %>_photo_link">
 <img style="border-width: 0px;" alt="photo" width="80px" src="<%= item.product.product_photos[0] ? item.product.product_photos[0].attachment_link : '/broken.png' %>" id="product_<%= item.product.id.to_s %>_photo"></a>
                                 </td>
                                 <td style="font-size: 12px;" <%= colspan='2' if item.quantity > 1 %> >
@@ -49,7 +49,7 @@
                                  <td><%= image_submit_tag '/images/shopping_cart_remove_small.png' %></td>
                                 </tr>
                                 <tr><td colspan="2" class="cart_product_name">
-<a style="font-weight: bold;" class="dotted" id="product_<%= item.product.id %>_name" href="/products/product?id=<%= item.product.id %>"><%= truncate(item.product.name, 60) %>
+<a style="font-weight: bold;" class="dotted" id="product_<%= item.product.id %>_name" href="/shop/product?id=<%= item.product.id %>"><%= truncate(item.product.name, 60) %>
 </a>
 </td>
 

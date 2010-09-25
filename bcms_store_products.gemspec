@@ -1,0 +1,20 @@
+SPEC = Gem::Specification.new do |spec| 
+  spec.name = "bcms_store_products"
+  spec.rubyforge_project = spec.name
+  spec.version = "1.1.0"
+  spec.summary = "A Store Module for BrowserCMS"
+  spec.author = "Jens Rasmussen" 
+  spec.email = "stamppot@gmail.com" 
+  spec.homepage = "http://www.browsercms.org" 
+  spec.files += Dir["app/**/*"]
+  spec.files += Dir["db/migrate/*.rb"]
+  spec.files -= Dir["db/migrate/*_browsercms_*.rb"]
+  spec.files -= Dir["db/migrate/*_load_seed_data.rb"]
+  spec.files += Dir["lib/bcms_store_products.rb"]
+  spec.files += Dir["lib/bcms_store_products/*"]
+  spec.files += Dir["rails/init.rb"]
+  spec.files += Dir["db/seeds.rb"]
+  spec.files += Dir["lib/tasks/seed_products_sample_data.rake"]
+  spec.has_rdoc = true
+  spec.extra_rdoc_files = ["README"]
+end

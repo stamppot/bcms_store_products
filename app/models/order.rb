@@ -1,5 +1,5 @@
 class Order < ActiveRecord::Base
-  acts_as_content_block
+  # acts_as_content_block
   belongs_to :cart
   belongs_to :customer
   has_many :line_items
@@ -7,13 +7,12 @@ class Order < ActiveRecord::Base
 
   # validates_presence_of :first_name
   # validates_presence_of :last_name
-  validates_presence_of :ship_to_name
-  validates_presence_of :ship_to_street_line_1
-  validates_presence_of :ship_to_city
-  validates_presence_of :ship_to_country
-  validates_presence_of :ship_to_zip
-  validates_presence_of :ship_to_country_name
-
+  validates_presence_of :name
+  validates_presence_of :street
+  validates_presence_of :ship_to_city       
+  validates_presence_of :zip
+  validates_presence_of :country
+	validates_presence_of :token
   validates_presence_of :line_items
   
   def purchase

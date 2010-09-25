@@ -1,4 +1,4 @@
-class CartPortlet < Portlet
+class ShoppingCartPortlet < Portlet
   def render
     @cart = Cart.current_cart(session)
     @products_in_cart = []

@@ -6,10 +6,10 @@ class CheckoutPortlet < Portlet
     if @items.empty?
       flash[:notice] = "Din indkøbskurv er tom"
       redirect_to '/shop'
-    else
-      @order = Order.new
-      @order.line_items = @cart.line_items
-    end    
+    end
+		@order = @cart.order || Order.new(flash[:record])
+			# @order = Order.new flash[:record]  # is flash[:record]; ... else Order.new
+    @order.line_items = @cart.line_items
   end
 
   def create # was: charge
@@ -17,12 +17,12 @@ class CheckoutPortlet < Portlet
     cart = Cart.current_cart(session)
     # Google checkout creates an order using the polling api
     @order = cart.order
-    if(!@order)
-      @order = cart.build_order(params[:order])
-      @order.payment_processor = 'paypal_express'
-      @order.financial_state = 'CHARGEABLE'
-      @order.fulfillment_state = 'NEW'
-    end
+    # if(!@order)
+    #   @order = cart.build_order(params[:order])
+    #   @order.payment_processor = 'paypal_express'
+    #   @order.financial_state = 'CHARGEABLE'
+    #   @order.fulfillment_state = 'NEW'
+    # end
 
     @order.ip_address = request.remote_ip
     if @order.save

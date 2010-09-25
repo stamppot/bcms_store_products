@@ -1,0 +1,49 @@
+<% if @products_to_browse && params[:type].nil? %>
+<div class="shop_products_overview">
+	<table class='products_overview'>
+		<% @products_to_browse.in_groups_of(5) do |group| %>
+		<tr>
+			<% group.each do |product| 
+				img_src = if product.blank? || !product.product_photos.any? || product.product_photos.first.attachment.blank?
+					"/themes/dyrgod/images/logo_no_text_small.png"
+				else
+					product.product_photos.first.attachment.file_path
+				end
+				thumb_src = if product.blank? || !product.product_photos.any? || product.product_photos.second.attachment.blank?
+					img_src
+				else
+					product.product_photos.second.attachment.file_path
+				end
+
+				product_name = product && "<div class='title'>#{product.name}</div>"
+				product_summ = product && truncate(product.summary_description, 150) %>
+				<td>
+					<table class='product product_<%= product.item_number || product.id %>'>
+						<tr>
+							<td width="20%" valign="top">
+								<table border="0" cellpadding="0" cellspacing="0">
+									<tbody>
+										<tr>
+											<td align="center">
+												<a href="/shop/product?id=2">
+													<%=image_tag(thumb_src, :alt => product.summary_description, :title => product.summary_description, :height => 105, :width => 105, :border => 0) %>
+												</a>
+											</td>
+										</tr>
+										<tr>
+											<td align="center" class="product_summary">
+												<span class="small_text"><a href="/shop/product?id=2"><%= product.name %></a></span><p>
+												</p></td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</td>
+					<% end %>
+				</tr>
+				<% end %>
+			</table>
+		</div>
+		<% end %>

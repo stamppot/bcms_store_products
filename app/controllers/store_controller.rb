@@ -61,16 +61,17 @@ class StoreController < ApplicationController
 			remove_item.quantity -= 1
 			remove_item.save
 		end
-
+		flash[:notice] = "1 #{remove_item.product.name} er taget op af indkøbskurven"
 		# FIXME: Use the real return path
-		redirect_to '/shop'
+		redirect_to '/shop/shopping_cart'
 	end			
 							
 	def shipping					
 		@cart = Cart.current_cart(session)
-		@order = @cart.order || Order.new(params["order"])
+		puts "cart: #{@order.inspect}"
+		@order = @cart && @cart.order || Order.new(params["order"])
 		@order.update_attributes params["order"] unless @order.new_record?
-		return unless @cart || @cart.line_items.empty?
+		return if @cart.nil? || @cart.line_items.empty?
 		@order.cart = @cart	
 		@order.ip_address = request.remote_ip
 		@order.token = rand(36**8).to_s(36)
@@ -91,13 +92,12 @@ class StoreController < ApplicationController
 		# check if order_id of cart has been set
 		@cart = Cart.current_cart(session)
 		@order = @cart.order
-		puts "PAYMENT: #{@order.id}"
 		@order.update_attributes params["order"]
 		if @order.save
 			@cart.order = @order
 			redirect_to '/shop/order_confirmation'
 		else
-			flash[:error] = "error"
+			flash[:error] = @order.errors
 			flash[:record] = params["order"]
 			redirect_to '/shop/payment'
 		end
@@ -106,29 +106,31 @@ class StoreController < ApplicationController
 	def confirm_order
 		@cart = Cart.current_cart(session)
 		@order = @cart.order
-		if @cart.id.to_s == params["order"]["id"].to_s
-			@order.confirm = true
-			@order.confirmed_on = DateTime.now
-		else
-			flash[:error] = "Wrong cart!"
+		if @order.line_items.empty?
+			flash[:notice] = 'Din indkøbskurv er tom'
+			redirect_to '/shop' and return
 		end
-		puts "CONFIRM_ORDER: #{@order.id}"
-		# @cart.line_items.each {|item| @order.line_items << item; item.save }
+		@order.confirmed = true
+		@order.confirmed_on = DateTime.now
+		@cart.line_items.each { |item| @order.line_items << item }
+		puts "CONFIRM_ORDER line_items: #{@order.line_items.map &:inspect}"
 		if @order.save
-			@cart.order = @order
-			# @cart.empty!
-			redirect_to '/shop/'
+			# @order.line_items.each &:save
+			OrderMailer.deliver_order_confirmation(@order)
+			@cart.empty!
+			session[:cart_id] = nil
+			# flash[:record] = @order
+			redirect_to '/shop/order_completed'
 		else
-			flash[:error] = "error"
+			flash[:error] = @order.errors
 			flash[:record] = params["order"]
 			redirect_to '/shop/order_confirmation'
 		end
-		# redirect_to '/shop/order_confirmation'
 	end
 	
-	# def finished_order
-	#		flash["Du har købt noget i butikken!"]
-	#		redirect_to '/shop'
-	# end	 
+	def cancel_order
+		@order = Order.find_by_token(params[:token])
+		@order.destroy
+	end
 
 end

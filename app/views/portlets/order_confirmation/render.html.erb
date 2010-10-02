@@ -54,7 +54,7 @@
 			<table class="order_products" cellspacing=0>
 			<% if @order.line_items %>
 				<tr class="title">
-					<td>Produkter <span class="correct"><a href="/shop/shipping_cart">(Ret)</a></span></td>
+					<td>Produkter <span class="correct"><a href="/shop/shopping_cart">(Ret)</a></span></td>
 					<td></td>
 				</tr>
 				<% total_price = @order.line_items.inject(0) {|sum, item| sum + item.unit_price * item.quantity } %>

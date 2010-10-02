@@ -1,4 +1,4 @@
 <%= f.cms_text_field :name %>
-<%= f.cms_drop_down :status, [['Ny', 'new'],['Betalt', 'Paid']['Behandles', 'Processing'],['Sendt', 'Shipped']] %>
+<%= f.cms_drop_down :fulfillment_state, [['Ny', 'New'],['Behandles', 'Processing'],['Sendt', 'Shipped'],['Betalt', 'Paid']] %>
 <%= f.cms_drop_down :handler, ActionView::Template.template_handler_extensions, :default => "erb" %>
 <%= f.cms_text_area :template, :default_value => @block.class.default_template %>

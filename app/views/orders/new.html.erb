@@ -1,22 +1,10 @@
 <% if @order %>
 	<% form_for :order, @order, :url => { :action => 'create', :method => 'post' } do |f| %>
 		<%= f.error_messages %>
-		<% if @order.payment_processor == 'paypal_express' && @order.paypal_express_token.blank? %>
-		    Token is blank, should probably redirect or something
-		<% else %>
-			<% if @order.payment_processor == 'paypal_express' %>
-				<%= f.hidden_field :paypal_express_token %>
-				<p>Din paypal status er: <%=h @order.payer_status %></p>
-				<p>Din paypal adresse status er: <%=h @order.address_status %></p>
-			<% end %>
-			<p>Order Financial State: <%=h @order.financial_state %></p>
+			<%= f.hidden_field :token %>
 			<p>Order Fulfillment State: <%=h @order.fulfillment_state %></p>
-		    <p>Navn: <%=h @order.first_name %> <%=h @order.last_name %></p>
-			<p>Contact Email: <%=h @order.email %></p>
-			<% if @order.payment_processor == 'google_checkout' %>
-				<p>Google Order number: <%=h @order.google_order_number %></p>
-				<%= f.hidden_field :google_order_number %>
-			<% end %>
+	    <p>Navn: <%=h @order.first_name %> <%=h @order.last_name %></p>
+			<p>Email: <%=h @order.email %></p>
 			<p>
 				<h3>Sendes til</h3>
 				Navn: <%=h @order.ship_to_name %> <br />

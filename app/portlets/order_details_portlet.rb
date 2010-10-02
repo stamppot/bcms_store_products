@@ -1,7 +1,7 @@
-class OrderDetails < Portlet
+class OrderDetailsPortlet < Portlet
   
   def render
-    @order = Order.get_by_token(params[:id])
+    @order = Order.find_by_token(params[:id])
     redirect_to '/shop' unless @order
   end
   

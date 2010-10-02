@@ -7,7 +7,7 @@ class RemoveOrderAttributes < ActiveRecord::Migration
 		remove_column :orders, :first_name
 		remove_column :orders, :last_name
 		remove_column :orders, :paypal_express_token
-		remove_column :orders, :financial_state
+		# remove_column :orders, :financial_state
 		remove_column :orders, :google_order_number
 		remove_column :orders, :paypal_express_payer_id
 		rename_column :orders, :ship_to_name, :name
@@ -28,7 +28,7 @@ class RemoveOrderAttributes < ActiveRecord::Migration
 		remove_column :orders, :card_holder
     add_column :orders, :paypal_express_payer_id, :string
     add_column :orders, :google_order_number, :string
-    add_column :orders, :financial_state, :string
+    # add_column :orders, :financial_state, :string
     add_column :orders, :paypal_express_token, :string
     add_column :orders, :last_name, :string
     add_column :orders, :first_name, :string

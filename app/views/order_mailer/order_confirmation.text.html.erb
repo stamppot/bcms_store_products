@@ -73,12 +73,12 @@
 	</div>
 	<div id="container">
 		<p>Kære <%=h @order.name %></p>
-		Din ordre fra Ølstykke Dyreklinik er blevet afsendt, og bør snart ankomme.
+		Tak for din bestilling hos Ølstykke Dyreklinik. Så snart din betaling er godkendt, sender vi dig dine varer.
 		<p>
-			Du kan følge din ordre ved at gå ind på <a href="http://www.postdanmark.dk/cms/da-dk/files/findPakke_indland.htm" alt="Find pakke">dette link</a>
-			og indtaste forsendelsesnummeret: <%= @order.tracking_number %>
+			Du kan se en status over din ordre ved at gå ind på <a href="http://www.fordimankan.dk/order?id=<%= @order.token %>" alt="Ordrestatus">dette link</a>.
+			Indtil ordren er taget i behandling, kan du fortryde dit køb.
 		</p>
-		<p>Purchased from:, (insert Ølstykke Dyreklinik details here</p>
+		<p>Ordredetaljer:</p>
 
 		<p>Sendes til:
 			<table>
@@ -110,8 +110,8 @@
 				<tr>
 					<td><%= item.product.name %></td>
 					<td><%= item.quantity %></td>
-					<td><%= danish_price item.unit_price %></td>
-					<td><%= danish_price(item.quantity * item.unit_price) %></td>
+					<td><%= item.danish_unit_price %></td>
+					<td><%= item.danish_total_price %></td>
 				</tr>
 				<% end %>
 				<tr>
@@ -144,7 +144,7 @@
 			</table>
 		</p>	
 
-		<p>Vi ønsker dig god fornøjelse med din indkøb og en god dag!</p>
+		<p>Tak for din bestilling og hav en god dag!</p>
 		<p>&nbsp;</p>
 		<p>Ølstykke Dyreklinik</p>
 	</div>

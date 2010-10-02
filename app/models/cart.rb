@@ -27,6 +27,7 @@ class Cart < ActiveRecord::Base
   def empty!
     @items = []
     @total_price = 0
+		self.order = nil
   end
 
   # Returns the current cart if the user has one or nil if they don't have a cart yet

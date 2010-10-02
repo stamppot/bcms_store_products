@@ -1,52 +1,51 @@
-				<% if @order.payment_processor == 'paypal_express' %>
-					<%= f.hidden_field :paypal_express_token %>
-					<p>Din paypal status er: <%=h @order.payer_status %></p>
-					<p>Din paypal adresse status er: <%=h @order.address_status %></p>
-				<% end %>
-				<p>Order Financial State: <%=h @order.financial_state %></p>
-				<p>Order Fulfillment State: <%=h @order.fulfillment_state %></p>
-			    <p>Navn: <%=h @order.first_name %> <%=h @order.last_name %></p>
-				<p>Contact Email: <%=h @order.email %></p>
-				<% if @order.payment_processor == 'google_checkout' %>
-					<p>Google Order number: <%=h @order.google_order_number %></p>
-					<%= f.hidden_field :google_order_number %>
-				<% end %>
-		  <p><%= f.submit "Complete Order" %></p>
+<% if @order %>
+<table class="cart_items" id="order_details" cellspacing=0>
+	<tr class="carttitle">
+		<td class="product_name" colspan="2" rowspan="2">Produkt<%= @order.line_items.size > 1 && "er" || "" %></td>
+		<td class="quantity" rowspan="2">Antal</td>
+		<td colspan="2" align="center">Pris</td>
+	</tr>
+	<tr class="carttitle">
+		<td class="unit_price">Stuk</td>
+		<td class="total_price">Total</td>
+	</tr>
+	<% total_price = @order.line_items.inject(0) {|sum, item| sum + item.unit_price * item.quantity } %>
 
-	<hr/>
-
-	<table class="order" cellspacing=0>
-	<% if @items %>
-		<tr class="carttitle">
-			<td rowspan="2">Antal</td>
-			<td rowspan="2">Beskrivelse</td>
-			<td colspan="2" align="center">Pris</td>
-		</tr>
-		<tr class="carttitle">
-			<td>Stuk</td>
-			<td>Total</td>
-		</tr>
+	<% @order.line_items.each do |item| %>
+	<% product = item.product %>
+	<tr>
+		<td class="product_photo"><a href="/shop/product?id=<%= item.product.id %>" id="product_<%= item.product_id.to_s %>_photo_link">
+			<img style="border-width: 0px;" alt="photo" src="<%= item.product.product_photos[0] ? item.product.product_photos[0].attachment_link : '/broken.png' %>" id="product_<%= item.product.id.to_s %>_photo" /></a>
+		</td>  
+		<td class="cart_product_name">
+			<a style="font-weight: bold;" class="dotted" id="product_<%= item.product.id %>_name" href="/shop/product?id=<%= item.product.id %>">
+				<%= truncate(item.product.name, 260) %>
+			</a>
+		</td>
+		<td><%= item.quantity %></td>
+		<td class="unit_price" align="right"><%= danish_price(item.unit_price) %></td>
+		<td class="total_price" align="right"><%= danish_price(item.unit_price * item.quantity) %></td>
+	</tr>
 	<% end %>
-	<% total_price = @items.inject(0) {|sum, item| sum + item.unit_price * item.quantity } %>
-	<% @items.each do |item| %>
-		<% product = item.product %>
-		<tr>
-			<td><%= item.quantity %></td>
-			<td><%= product.name %></td>
-			<td align="right"><%= danish_price(item.unit_price) %></td>
-			<td align="right"><%= danish_price(item.unit_price * item.quantity) %></td>
-		</tr>
-	<% end %>
-		<tr>
-			<td colspan="3" align="right"><strong>Total:</strong></td>
-			<td id="totalcell"><%= danish_price(total_price) %></td>
-	</table>
+        <tr>
+                <td></td>
+                <td>Fragt</td>
+                <td colspan="3" align="right">39,00</td>
+        </tr>
+        <tr>
+                <td colspan="5">&nbsp;</td>
+        </tr>
+	<tr>
+		<td colspan="2"></td>
+		<td colspan="3" align="right"><strong>Varer i alt: <%= danish_price(total_price + 39.0) %></strong></td>
+	</tr>                  
+</table>
 
 	<h3>Sendes til</h3>
 	<table class="customer_info">
 		<tr>
 			<td>Navn:</td>
-			<td><%= @order.ship_to_name %></td>
+			<td><%= @order.name %></td>
 		</tr>
 		<tr>
 			<td>Email:</td>
@@ -54,11 +53,11 @@
 		</tr>
 		<tr>
 			<td>Adresse:</td>
-			<td><%= @order.ship_to_street_line_1 %></td>
+			<td><%= @order.street %></td>
 		</tr>
 		<tr>
 			<td>Postnr:</td>
-			<td><%= @order.ship_to_zip %></td>
+			<td><%= @order.zip %></td>
 		</tr>
 		<tr>
 			<td>By:</td>
@@ -66,10 +65,11 @@
 		</tr>
 		<tr>
 			<td>Land:</td>
-			<td><%= @order.ship_to_country_name %></td>
+			<td><%= @order.country %></td>
 		</tr>
 		<tr>
 			<td></td>
 			<td></td>
 		</tr>
 	</table>
+<% end %>
